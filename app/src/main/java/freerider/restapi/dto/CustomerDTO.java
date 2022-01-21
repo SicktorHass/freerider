@@ -117,24 +117,30 @@ public class CustomerDTO {
 		//
 		// TODO: check validity of attributes before creating Customer object
 		Customer customer = null;
+
 		
-		if(this.serial <0) {
-			System.err.println("Error: invalid JSON onject rejected, reason is wrong serial");
-			return Optional.empty();}
-		if(this.uuid<0) {
-			System.err.println("Error: invalid JSON onject rejected, reason is wrong uuid");
-			return Optional.empty();}
 		if(this.timeSent.before(new Date(1609459200000L))||this.timeSent.after(new Date())) {
 			System.err.println("Error: invalid JSON onject rejected, reason is wrong date");
-			return Optional.empty();}
+			return Optional.empty();
+		}
 		if(this.name == null || this.name == "") {
 			System.err.println("Error: invalid JSON onject rejected, reason is missing name");
-			return Optional.empty();}
+			return Optional.empty();
+		}
 		try {
 			//
 			if (this.id == null || Long.parseLong(this.id) < 0) {
 				System.err.println("Error: invalid JSON onject rejected, reason is wrong or missing id");
-				return Optional.empty();}
+				return Optional.empty();
+			}
+			if(this.serial <0) {
+				System.err.println("Error: invalid JSON onject rejected, reason is wrong serial");
+				return Optional.empty();
+			}
+			if(this.uuid<0) {
+				System.err.println("Error: invalid JSON onject rejected, reason is wrong uuid");
+				return Optional.empty();
+			}
 			long idL = Long.parseLong( this.id );
 			customer = new Customer()
 				.setId( idL )
@@ -151,7 +157,7 @@ public class CustomerDTO {
 		} catch(NumberFormatException e){
 			customer = null;
 			System.err.println("Error: invalid JSON onject rejected, reason is super wrong id");
-		} catch( Exception e ) {
+		} catch( NullPointerException e ) {
 			customer = null;
 		}
 		return Optional.ofNullable( customer );

@@ -55,7 +55,7 @@ class CustomersDTOController implements CustomersDTOAPI{
             Optional<Customer> customerOpt = dto.create();
             if(customerOpt.isPresent()){
                 if(customerRepository.existsById(customerOpt.get().getId())){
-                    re = new ResponseEntity<>(HttpStatus.CONFLICT);
+                    re = new ResponseEntity<>(dto, HttpStatus.CONFLICT);
                 }else{
                     this.customerRepository.save(customerOpt.get());
                     re = new ResponseEntity<>(HttpStatus.ACCEPTED);
@@ -73,18 +73,26 @@ class CustomersDTOController implements CustomersDTOAPI{
     @Override
     public ResponseEntity<List<CustomerDTO>> putCustomers(@RequestBody List<CustomerDTO> dtos ) {
         // TODO: replace by logger
+        ResponseEntity re = null;
         System.err.println( request.getMethod() + " " + request.getRequestURI() );
         //
-        dtos.stream().forEach( dto -> {
+        for(CustomerDTO dto : dtos){
             dto.print();
             Optional<Customer> customerOpt = dto.create();
             CustomerDTO.print( customerOpt );
             if(customerOpt.isPresent()){
-                customerRepository.save(customerOpt.get());
+                if(customerRepository.existsById(customerOpt.get().getId())){
+                    customerRepository.save(customerOpt.get());
+                    re = new ResponseEntity<>(null, HttpStatus.ACCEPTED);
+                }else{
+                    re = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+                }
+            }else{
+                re = new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
             }
             System.out.println();
-        });
-        return new ResponseEntity<>( null, HttpStatus.ACCEPTED );
+        }
+        return re;
     }
 
     @Override
