@@ -149,7 +149,8 @@ class CustomersController implements CustomersAPI{
 				return oc;
 			}
 		}else{
-			kvpairs.put("id", customerRepository.getLastID());
+			//generate key
+			//kvpairs.put("id", customerRepository.getLastID());
 		}
 		if(kvpairs.containsKey("first")&&kvpairs.containsKey("name")){
 			c.setName(kvpairs.get("first").toString(), kvpairs.get("name").toString());
