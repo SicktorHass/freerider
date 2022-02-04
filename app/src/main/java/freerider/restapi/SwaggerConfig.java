@@ -49,6 +49,8 @@ public class SwaggerConfig {
 		//app.api.endpoints.customers
 		String customersEP_URL = regexEP_URL( "app.api.endpoints.customers", "/api/v1/customers" );
 		String serverEP_URL = regexEP_URL( "app.api.endpoints.server", "/server" );
+		String vehiclesEP_URL = regexEP_URL("app.api.endpoints.vehicles", "/api/v1/vehicles");
+		String reservationsEP_URL = regexEP_URL("app.api.endpoints.reservations", "/api/v1/reservations");
 		//
 		return new Docket(
 				// show http://localhost:8080/v2/api-docs in UI for swagger: '2.0' api-doc
@@ -62,7 +64,7 @@ public class SwaggerConfig {
 			.apis( RequestHandlerSelectors.basePackage( "freerider.restapi" ) )
 //			.paths( PathSelectors.any() )
 //			.paths( PathSelectors.regex( "/api/v1/customers.*" ) )
-			.paths( PathSelectors.regex( customersEP_URL + "|" + serverEP_URL ) )
+			.paths( PathSelectors.regex( customersEP_URL + "|" + serverEP_URL + "|" + vehiclesEP_URL + "|" + reservationsEP_URL) )
 //			.paths( PathSelectors.regex( customersEP_URL + "|" + serverEP_URL + "|/people.*" ) )
 			.build()
 //			.directModelSubstitute( LocalDate.class, java.sql.Date.class )
